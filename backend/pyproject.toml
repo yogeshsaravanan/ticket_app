@@ -1,0 +1,30 @@
+[project]
+name = "support-triage-backend"
+version = "1.0.0"
+description = "Support ticket triage API: urgency-ordered queue, rule-based classification, mock integrations."
+readme = "../README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.141",
+    "uvicorn[standard]>=0.53",
+]
+
+[dependency-groups]
+# Installed by default with `uv sync`; skip with `uv sync --no-dev`.
+dev = [
+    "pytest>=9",
+    # fastapi.testclient needs an HTTP client; current Starlette wants httpx2
+    # (plain httpx still works but emits a deprecation warning).
+    "httpx2>=2.13",
+]
+
+[tool.uv]
+# An application, not a library: uv installs the dependencies only and doesn't
+# build or install the project itself. `app` is imported from backend/.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+filterwarnings = ["error::DeprecationWarning"]
